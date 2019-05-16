@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Select from "react-select";
+import { countries } from "../src/util/countriesList";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+  state = {
+    selectedOption: null
+  };
+
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
+    console.log(selectedOption.value);
+  };
+
+  render() {
+    const { selectedOption } = this.state;
+
+    return (
+      <>
+        <div className="countryInput">
+        <h2>Please select the country </h2>
+          <Select
+            value={selectedOption}
+            onChange={this.handleChange}
+            options={countries}
+          />
+        </div>
+      </>
+    );
+  }
 }
-
-export default App;
