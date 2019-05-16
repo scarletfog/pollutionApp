@@ -5,13 +5,35 @@ import "./App.css";
 
 export default class App extends React.Component {
   state = {
-    selectedOption: null
+    selectedOption: {
+      value: ""
+    }
   };
 
-  handleChange = selectedOption => {
-    this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
-    console.log(selectedOption.value);
+  handleChange = ({ selectedOption: value }) => {
+    this.setState({
+      selectedOption: {
+        ...this.state.selectedOption,
+        value
+      }
+    });
+
+    const countryCode = this.state.selectedOption.value;
+
+    console.log(countryCode)
+    try {
+      fetch("https://api.openaq.org/v1/measurements?country=PL")
+        .then(res => {
+          if (res) {
+            res.json().then(function(data) {
+              console.log(data);
+            });
+          }
+        })
+        .catch(er => console.log("Fetch Error :-S", er));
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   render() {
@@ -20,9 +42,9 @@ export default class App extends React.Component {
     return (
       <>
         <div className="countryInput">
-        <h2>Please select the country </h2>
+          <h2>Please select the country </h2>
           <Select
-            value={selectedOption}
+            value={selectedOption.value}
             onChange={this.handleChange}
             options={countries}
           />
